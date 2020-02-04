@@ -12,6 +12,7 @@ def get_driver(headless=True):
     # user_data_dir = os.path.realpath(user_data_dir)
     # options.add_argument('--user-data-dir={}'.format(user_data_dir))
     options.add_argument('--disable-extensions')
+    options.add_argument('log-level=2')
 
     # if nopic:
     #     prefs = {'profile.managed_default_content_settings.images': 2}
