@@ -1,0 +1,6 @@
+from config.logger import logger
+
+# 请自行添加提醒方法
+
+def alert(msg):
+    logger.info('alert: {}'.format(msg))
