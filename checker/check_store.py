@@ -12,13 +12,13 @@ def check(driver, url, no_keyword='无货', yes_keyword='有货', out_keyword='�
     page_source = driver.page_source
     desc = '{} {}'.format(url, name)
     if no_keyword in page_source:
-        logger.info('{} check result: sold out'.format(desc))
+        logger.info('{} check result: 无货'.format(desc))
         return False
     elif out_keyword in page_source:
         logger.info('{} check result: 下架'.format(desc))
         return False
     elif yes_keyword in page_source:
-        logger.info('{} check result: in sell'.format(desc))
+        logger.info('{} check result: 有货'.format(desc))
         alert('{} in sell'.format(desc))
         return True
     logger.warning('{} check result: unkown error'.format(desc))
@@ -39,20 +39,22 @@ def check_all(driver=None, do_order=False):
                 msg = '{} 已尝试提交订单，请尽快查看并付款'.format(desc)
                 logger.info(msg)
                 alert(msg)
+                input('已尝试提交订单，如需继续检测，请按enter')
             else:
                 logger.error('{} 提交订单失败'.format(desc))            
         time.sleep(0.5)
     if need_driver:
         driver.close()
 
-def check_forever():
+def check_forever(do_order=True, headless=False):
     logger.info('check begin...')
-    driver = get_driver(headless=False)
-    login(driver)
+    driver = get_driver(headless=headless)
+    if do_order:
+        login(driver)
     try:
         while True:
-            check_all(driver)
-            time.sleep(10)
+            check_all(driver, do_order=do_order)
+            time.sleep(5)
     except Exception as err:
         logger.info(err)
         driver.close()
@@ -62,7 +64,9 @@ def login(driver):
     while True:
         driver.get('https://passport.jd.com/new/login.aspx')
         input('请手动登录，然后在这里输入回车')
+        time.sleep(2)
         if check_login(driver):
+            logger.info('登录成功，将开始检测')
             return True
         print('未检测到登录状态，请重试')
 
