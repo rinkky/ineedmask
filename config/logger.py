@@ -5,6 +5,9 @@ import logging
 logger = logging.getLogger("default")
 logger.setLevel(logging.DEBUG)
 
+if not os.path.exists('log'):
+    os.makedirs('log')
+
 file_handler = logging.FileHandler(
     os.path.join('log', "{}.log".format(time.strftime('%Y%m%d%H%M%S'))),
     encoding='utf-8'
