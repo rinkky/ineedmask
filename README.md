@@ -6,6 +6,7 @@
 - python3
 - chrome浏览器
 - chromedriver
+- 安装依赖 `pip install -r requirements.txt`
 
 ## 用法
 
